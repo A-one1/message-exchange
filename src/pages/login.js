@@ -62,10 +62,21 @@ function Login({ setIsAuth }) {
           });
         }
 
-        navigate("/posts");
+        navigate("/home");
+        console.log("LLOGGED IN")
+        toast.info(
+          "Successfully Logged In!!!",
+          {
+            position: toast.POSITION.TOP_CENTER,
+            autoClose: false,
+            theme: "colored",
+          }
+        );
+        
       })
       .catch((error) => {
-        toast.error(error.code.replace("auth/", ""));
+        toast.error(error.code);
+        console.log("asdasdsa", error);
       });
   };
 
@@ -137,7 +148,6 @@ function Login({ setIsAuth }) {
       <section className="signup">
         <div className="container">
           <div className="signin-content">
-
             <div className="signin-form">
               <h2 className="form-title">Login</h2>
               <form className="register-form" id="login-form">
