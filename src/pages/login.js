@@ -63,16 +63,12 @@ function Login({ setIsAuth }) {
         }
 
         navigate("/home");
-        console.log("LLOGGED IN")
-        toast.info(
-          "Successfully Logged In!!!",
-          {
-            position: toast.POSITION.TOP_CENTER,
-            autoClose: false,
-            theme: "colored",
-          }
-        );
-        
+        console.log("LLOGGED IN");
+        toast.info("Successfully Logged In!!!", {
+          position: toast.POSITION.TOP_CENTER,
+          autoClose: false,
+          theme: "colored",
+        });
       })
       .catch((error) => {
         toast.error(error.code);
@@ -210,7 +206,7 @@ function Login({ setIsAuth }) {
                 type="submit"
                 onClick={signInWithGoogle}
               >
-                Continue with Google
+                Login with Google
               </button>
               <br />
               <br />
@@ -224,8 +220,6 @@ function Login({ setIsAuth }) {
                 >
                   <input
                     style={{
-                      marginTop: "0px",
-                      marginLeft: "25px",
                       color: "white",
                       fontSize: "15px",
                       backgroundColor: "#42b72a",
