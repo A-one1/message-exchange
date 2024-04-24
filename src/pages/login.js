@@ -62,7 +62,7 @@ function Login({ setIsAuth }) {
           });
         }
 
-        navigate("/home");
+        navigate("/landingPage");
         console.log("LLOGGED IN");
         toast.info("Successfully Logged In!!!", {
           position: toast.POSITION.TOP_CENTER,
@@ -226,12 +226,12 @@ function Login({ setIsAuth }) {
                       border: "1px solid transparent",
                       padding: "10px 15px",
                       fontWeight: "bold",
-                      width: "80%",
+                      width: "90%",
                     }}
-                    type="text"
+                    type="submit"
                     readOnly
                     className="form-submit"
-                    value="   Create a new account"
+                    value="Create a new account"
                   />
                 </a>
               </div>

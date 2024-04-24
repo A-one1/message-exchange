@@ -15,6 +15,7 @@ import { auth } from "./firebase";
 import "react-toastify/dist/ReactToastify.css";
 import Home from "./pages/home";
 import { toast } from "react-toastify";
+import LandingPage from "./pages/LandingPage";
 
 function App() {
   const [isCollapsed, setIsCollapsed] = useState(true);
@@ -85,6 +86,8 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login setIsAuth={setIsAuth} />} />
         <Route path="/home" element={<Home />} />
+        <Route path="/landingPage" element={<LandingPage isAuth={isAuth} setIsAuth={setIsAuth}/>} />
+
 
         {/* <Route path="/login" element={<Login setIsAuth={setIsAuth} />} />
       <Route path="/signup" element={<SignUp />} />
