@@ -51,7 +51,7 @@ function Login({ setIsAuth }) {
             date,
             name,
             email,
-            selectedTopics,
+            
           });
         } else {
           await addDoc(postCollectionRef, {
