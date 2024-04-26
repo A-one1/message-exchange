@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-bootstrap";
 import CreatePost from "./CreatePost";
 import Card from "../component/card";
+import TopicSelector from "../component/topicSelector";
 
 function LandingPage({ isAuth }) {
   const navigate = useNavigate();
@@ -36,7 +37,9 @@ function LandingPage({ isAuth }) {
   };
 
   useEffect(() => {
+    getPosts();
     if (!isAuth) {
+      console.log("🚀 ~ useEffect ~ isAuth:", isAuth);
       navigate("/login");
     } else {
       getPosts();
@@ -49,27 +52,30 @@ function LandingPage({ isAuth }) {
   return (
     <div className="homePage">
       <ToastContainer />
-      {/* <CreatePost></CreatePost> */}
-      {postLists.length === 0 ? (
-        <div className="homepage-announcement">
-          <strong>
-            At this time, we do not have any new announcements to share.
-            <br />
-            Please check back later for updates
-          </strong>
-        </div>
-      ) : (
-        <>
-          {/* <CreatePost></CreatePost> */}
-          {/* <Card
-            postLists={postLists}
-            onDelete={deletePost}
-            isAuth={isAuth}
-            setPostLists={setPostLists}
-            getPosts={getPosts}
-          /> */}
-        </>
-      )}
+      <CreatePost isAuth={isAuth} />
+      <TopicSelector/>
+
+      {postLists.map((post, index) => {
+        return (
+          <>
+            <div className="post">
+              <div className="postWrapper">
+                <div className="postTop">
+                  <div className="postTopLeft">{post.topic}</div>
+                </div>
+                <div className="postHeader">
+                  <div className="title">
+                    <h3>
+                      <strong> {post.title}</strong>
+                    </h3>
+                  </div>
+                </div>
+              </div>
+              <div className="postTextContainer">{post.postText}</div>
+            </div>
+          </>
+        );
+      })}
     </div>
   );
 }

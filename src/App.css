@@ -96,10 +96,6 @@ a {
   cursor: pointer;
   font-size: 18px;
 }
-input,
-textarea {
-  margin-top: 5px;
-}
 
 .loginPage {
   width: 100vw;
@@ -262,6 +258,38 @@ textarea {
   font-size: 24px;
   margin-bottom: 16px;
 }
+.post-form {
+  width: 500px;
+  margin: 0 auto;
+  background-color: #fff;
+  border: 1px solid #e6ecf0;
+  border-radius: 5px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.form-input,
+.form-textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #e6ecf0;
+  border-radius: 5px;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+}
+
+.form-button {
+  background-color: #1da1f2;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.form-button:hover {
+  background-color: #0c85d0;
+}
 
 .form-group {
   display: flex;
@@ -269,9 +297,8 @@ textarea {
   margin-bottom: 16px;
   align-items: center;
 }
-.form-submit:hover{
+.form-submit:hover {
   transform: scale(1.1);
-
 }
 
 .form-label {
@@ -438,10 +465,10 @@ textarea {
   display: flex;
   align-items: center;
 }
-.dropdown-item{
+.dropdown-item {
   width: 80%;
 }
-.dropdown-item:hover{
+.dropdown-item:hover {
   color: #4bd4ec;
   transform: scale(1.1);
 }
@@ -558,12 +585,6 @@ textarea {
   .table td {
     white-space: nowrap; /* Prevent table cells from wrapping on smaller screens */
   }
-  .login-with-google-btn {
-   /* font-size: 10px;
-   padding: 10px 1px 20px 20px;
-   white-space: nowrap; */
-
-  }
 }
 
 nav {
@@ -604,7 +625,6 @@ nav {
 .nav-link:hover {
   color: #4bd4ec;
   transform: scale(1.1);
-
 }
 .navbar {
   height: 55px;
