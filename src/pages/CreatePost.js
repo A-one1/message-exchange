@@ -3,12 +3,11 @@ import {
   addDoc,
   collection,
   doc,
-  getDoc,
   serverTimestamp,
   updateDoc,
 } from "firebase/firestore";
 import { db, auth } from "../firebase";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "firebase/firestore";
 import "firebase/storage"; // <----
 import "../App.css";
@@ -16,7 +15,6 @@ import "../App.css";
 function CreatePost(props) {
   let postid = "";
   let utcDateTime = "";
-  const location = useLocation();
   const navigate = useNavigate();
   const { isAuth } = props;
 

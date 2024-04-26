@@ -11,7 +11,6 @@ import { db } from "../firebase";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-bootstrap";
 import CreatePost from "./CreatePost";
-import Card from "../component/card";
 import TopicSelector from "../component/topicSelector";
 
 function LandingPage({ isAuth }) {
@@ -53,27 +52,25 @@ function LandingPage({ isAuth }) {
     <div className="homePage">
       <ToastContainer />
       <CreatePost isAuth={isAuth} />
-      <TopicSelector/>
+      <TopicSelector />
 
-      {postLists.map((post, index) => {
+      {postLists.map((post, key) => {
         return (
-          <>
-            <div className="post">
-              <div className="postWrapper">
-                <div className="postTop">
-                  <div className="postTopLeft">{post.topic}</div>
-                </div>
-                <div className="postHeader">
-                  <div className="title">
-                    <h3>
-                      <strong> {post.title}</strong>
-                    </h3>
-                  </div>
+          <div className="post" key={key}>
+            <div className="postWrapper">
+              <div className="postTop">
+                <div className="postTopLeft">{post.topic}</div>
+              </div>
+              <div className="postHeader">
+                <div className="title">
+                  <h3>
+                    <strong> {post.title}</strong>
+                  </h3>
                 </div>
               </div>
-              <div className="postTextContainer">{post.postText}</div>
             </div>
-          </>
+            <div className="postTextContainer">{post.postText}</div>
+          </div>
         );
       })}
     </div>

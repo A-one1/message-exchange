@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { Link, Route, Routes, useNavigate } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.css";
 import {
   Container,
@@ -49,19 +49,18 @@ function App() {
 
   return (
     <>
+      <ToastContainer
+        position="top-center"
+        autoClose={3000}
+        theme="colored"
+        closeOnClick={true}
+      />
       <Navbar
         bg="dark"
         data-bs-theme="dark"
         expand="sm"
         className="bg-body-tertiary"
       >
-        <ToastContainer
-          position="top-center"
-          autoClose={3000}
-          theme="colored"
-          hideProgressBar={true}
-          closeOnClick={true}
-        />
         <Container>
           <Navbar.Brand href="home">X</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -86,8 +85,10 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login setIsAuth={setIsAuth} />} />
         <Route path="/home" element={<Home />} />
-        <Route path="/landingPage" element={<LandingPage isAuth={isAuth} setIsAuth={setIsAuth}/>} />
-
+        <Route
+          path="/landingPage"
+          element={<LandingPage isAuth={isAuth} setIsAuth={setIsAuth} />}
+        />
 
         {/* <Route path="/login" element={<Login setIsAuth={setIsAuth} />} />
       <Route path="/signup" element={<SignUp />} />

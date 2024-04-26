@@ -23,6 +23,7 @@ import "../App.css";
 function Login({ setIsAuth }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const[selectedTopics,setSelectedTopics] = useState([]);
 
   const navigate = useNavigate();
   const postCollectionRef = collection(db, "Users");
@@ -50,6 +51,7 @@ function Login({ setIsAuth }) {
             date,
             name,
             email,
+            selectedTopics,
           });
         } else {
           await addDoc(postCollectionRef, {
@@ -59,6 +61,7 @@ function Login({ setIsAuth }) {
             email,
             isAdmin: false,
             isApproved: false,
+            selectedTopics,
           });
         }
 
@@ -116,22 +119,17 @@ function Login({ setIsAuth }) {
           position: toast.POSITION.TOP_CENTER,
           autoClose: 3000,
           theme: "colored",
-          hideProgressBar: true,
-          closeOnClick: true,
         });
       })
       .catch((error) => {
         console.log(error);
-        if (error.code == "auth/missing-email") {
+        if (error.code === "auth/missing-email") {
           const emailInput = document.getElementById("email");
           if (emailInput) {
             emailInput.focus();
             toast.error("Please input your email.", {
               position: toast.POSITION.TOP_CENTER,
-              autoClose: 3000,
               theme: "colored",
-              hideProgressBar: true,
-              closeOnClick: true,
             });
             return;
           }
