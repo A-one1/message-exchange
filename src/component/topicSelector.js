@@ -12,17 +12,18 @@ import { Button, Col, InputGroup, Row } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import { db } from "../firebase";
 import { auth } from "../firebase";
+import { useLocation, useNavigate } from "react-router-dom";
 
-function TopicSelector() {
+function TopicSelector({ userEmail, selectedTopics, setSelectedTopics }) {
   const [allTopic, setAllTopic] = useState([]);
-  const [selectedTopics, setSelectedTopics] = useState([]);
+  // const [selectedTopics, setSelectedTopics] = useState([]);
   const postsCollectionRef = collection(
     db,
     process.env.REACT_APP_ADMIN_DATABSE
   );
   const usersCollectionRef = collection(db, "Users");
-
-  const email = auth.currentUser.email;
+  const email = userEmail;
+  const navigate = useNavigate();
 
   const getTopics = async () => {
     const q = query(postsCollectionRef, orderBy("date", "desc"));
@@ -30,12 +31,14 @@ function TopicSelector() {
     const topics = data.docs.map((doc) => doc.data().topic);
     const uniqueTopics = Array.from(new Set(topics));
     setAllTopic(uniqueTopics);
+    setSelectedTopics(selectedTopics);
   };
 
   const getUserSelectedTopics = async () => {
     const querySnapshot = await getDocs(
       query(usersCollectionRef, where("email", "==", email))
     );
+
     if (querySnapshot.size > 0) {
       setSelectedTopics(querySnapshot.docs[0].data().selectedTopics || []);
     }
@@ -54,6 +57,7 @@ function TopicSelector() {
         });
       }
     }
+    navigate("/landingPage");
   };
 
   const handleCheckboxChange = (topic) => {
@@ -67,48 +71,56 @@ function TopicSelector() {
   useEffect(() => {
     getTopics();
     getUserSelectedTopics();
-  }, []);
+  }, [userEmail]);
 
   return (
-    <Form style={{ width: "80%" }} onSubmit={updateProfile}>
-      <center>
-        <b>Suscribe to these topic or Create a new one.</b>
-      </center>
-      <Row>
-        {allTopic.map((topic, key) => (
-          <Col key={key} md={4}>
-            <InputGroup className="mb-3">
-              <InputGroup.Checkbox
-                onChange={() => handleCheckboxChange(topic)}
-                checked={selectedTopics.includes(topic)}
-              />
-              <Form.Control value={topic} readOnly />
-              {selectedTopics.includes(topic) ? (
-                <Button
-                  variant="danger"
-                  size="sm"
-                  onClick={() => handleCheckboxChange(topic)}
-                  style={{ marginLeft: "10px" }}
-                >
-                  Unsubscribe
-                </Button>
-              ) : (
-                <Button
-                  variant="success"
-                  size="sm"
-                  onClick={() => handleCheckboxChange(topic)}
-                  style={{ marginLeft: "10px" }}
-                >
-                  Subscribe
-                </Button>
-              )}
-            </InputGroup>
-          </Col>
-        ))}
-      </Row>
-
-      <Button type="submit">Submit</Button>
-    </Form>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        height: "100vh",
+        marginTop: "5rem",
+      }}
+    >
+      <Form style={{ width: "80%" }} onSubmit={updateProfile}>
+        <center>
+          <b>Suscribe to these topic or Create a new one.</b>
+        </center>
+        <Row>
+          {allTopic.map((topic, key) => (
+            <Col key={key} md={4}>
+              <InputGroup className="mb-3">
+                <InputGroup.Checkbox
+                  onChange={() => handleCheckboxChange(topic)}
+                  checked={selectedTopics.includes(topic)}
+                />
+                <Form.Control value={topic} readOnly />
+                {selectedTopics.includes(topic) ? (
+                  <Button
+                    variant="danger"
+                    size="sm"
+                    onClick={() => handleCheckboxChange(topic)}
+                    style={{ marginLeft: "10px" }}
+                  >
+                    Unsubscribe
+                  </Button>
+                ) : (
+                  <Button
+                    variant="success"
+                    size="sm"
+                    onClick={() => handleCheckboxChange(topic)}
+                    style={{ marginLeft: "10px" }}
+                  >
+                    Subscribe
+                  </Button>
+                )}
+              </InputGroup>
+            </Col>
+          ))}
+        </Row>
+        <Button type="submit">Submit</Button>
+      </Form>
+    </div>
   );
 }
 

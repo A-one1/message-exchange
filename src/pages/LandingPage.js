@@ -6,22 +6,35 @@ import {
   doc,
   orderBy,
   query,
+  where,
 } from "firebase/firestore";
 import { db } from "../firebase";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-bootstrap";
 import CreatePost from "./CreatePost";
-import TopicSelector from "../component/topicSelector";
 
-function LandingPage({ isAuth }) {
+function LandingPage({ isAuth, userEmail }) {
   const navigate = useNavigate();
   const [postLists, setPostLists] = useState([]);
   const [loading, isLoading] = useState(true);
+  const [selectedTopics, setSelectedTopics] = useState([]);
+  console.log("🚀 ~ LandingPage ~ selectedTopics:", selectedTopics);
+  const email = userEmail;
+
   const postsCollectionRef = collection(
     db,
     process.env.REACT_APP_ADMIN_DATABSE
   );
+  const usersCollectionRef = collection(db, "Users");
 
+  const getUserSelectedTopics = async () => {
+    const querySnapshot = await getDocs(
+      query(usersCollectionRef, where("email", "==", email))
+    );
+    if (querySnapshot.size > 0) {
+      setSelectedTopics(querySnapshot.docs[0].data().selectedTopics || []);
+    }
+  };
   async function deletePost(id) {
     const postDoc = doc(db, process.env.REACT_APP_ADMIN_DATABSE, id);
     await deleteDoc(postDoc);
@@ -35,15 +48,24 @@ function LandingPage({ isAuth }) {
     isLoading(false);
   };
 
+  const filteredPosts = postLists.filter((post) =>
+    selectedTopics.includes(post.topic)
+  );
+
+  // useEffect hook for fetching posts
   useEffect(() => {
     getPosts();
+  }, [email]); // depends on email
+
+  // useEffect hook for user authentication and getting user-selected topics
+  useEffect(() => {
     if (!isAuth) {
-      console.log("🚀 ~ useEffect ~ isAuth:", isAuth);
       navigate("/login");
     } else {
-      getPosts();
+      getUserSelectedTopics();
     }
-  }, [setPostLists]);
+  }, [isAuth, email]); // depends on isAuth and email
+
   if (loading) {
     return <div> </div>;
   }
@@ -52,9 +74,8 @@ function LandingPage({ isAuth }) {
     <div className="homePage">
       <ToastContainer />
       <CreatePost isAuth={isAuth} />
-      <TopicSelector />
 
-      {postLists.map((post, key) => {
+      {filteredPosts.map((post, key) => {
         return (
           <div className="post" key={key}>
             <div className="postWrapper">

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.css";
@@ -10,22 +10,29 @@ import {
   ToastContainer,
 } from "react-bootstrap";
 import Login from "./pages/login";
-import { signOut } from "firebase/auth";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "./firebase";
 import "react-toastify/dist/ReactToastify.css";
 import Home from "./pages/home";
 import { toast } from "react-toastify";
 import LandingPage from "./pages/LandingPage";
+import TopicSelector from "./component/topicSelector";
 
 function App() {
   const [isCollapsed, setIsCollapsed] = useState(true);
   const navigate = useNavigate();
+  const [selectedTopics, setSelectedTopics] = useState([]);
   const [isAuth, setIsAuth] = useState(() => {
     const storedAuth = localStorage.getItem("isAuth");
     return storedAuth ? JSON.parse(storedAuth) : false;
   });
+  const [userEmail, setUserEmail] = useState(
+    auth.currentUser ? auth.currentUser.email : null
+  );
   console.log("🚀 ~ const[isAuth,setIsAuth]=useState ~ isAuth:", isAuth);
   const notify = () => toast("Wow so easy!");
+
+  
 
   const signUserOut = () => {
     signOut(auth).then(() => {
@@ -47,6 +54,17 @@ function App() {
     setIsCollapsed(!isCollapsed);
   };
 
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUserEmail(user.email);
+      } else {
+        setUserEmail(null);
+      }
+    });
+    return () => unsubscribe();
+  }, []);
+
   return (
     <>
       <ToastContainer
@@ -67,7 +85,7 @@ function App() {
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">
               <Nav.Link href="home">Home</Nav.Link>
-              <Nav.Link href="#link">Profile</Nav.Link>
+              {isAuth && <Nav.Link href="/availableTopics"> Topics</Nav.Link>}
 
               {!isAuth && <Nav.Link href="/login">Login</Nav.Link>}
 
@@ -87,7 +105,25 @@ function App() {
         <Route path="/home" element={<Home />} />
         <Route
           path="/landingPage"
-          element={<LandingPage isAuth={isAuth} setIsAuth={setIsAuth} />}
+          element={
+            <LandingPage
+              isAuth={isAuth}
+              setIsAuth={setIsAuth}
+              selectedTopics={selectedTopics}
+              userEmail={userEmail}
+
+            />
+          }
+        />
+        <Route
+          path="/availableTopics"
+          element={
+            <TopicSelector
+              userEmail={userEmail}
+              selectedTopics={selectedTopics}
+              setSelectedTopics={setSelectedTopics}
+            />
+          }
         />
 
         {/* <Route path="/login" element={<Login setIsAuth={setIsAuth} />} />
