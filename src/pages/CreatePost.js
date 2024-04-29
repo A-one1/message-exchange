@@ -30,7 +30,7 @@ function CreatePost({ isAuth, email }) {
   const usersCollectionRef = collection(db, "Users");
 
   const createPost = async () => {
-    const topic = topicZ.toLowerCase();
+    const topic = topicZ.toUpperCase();
     await addDoc(postCollectionRef, {
       topic,
       title,

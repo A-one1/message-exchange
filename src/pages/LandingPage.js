@@ -58,7 +58,7 @@ function LandingPage({ isAuth, userEmail }) {
     } else {
       getUserSelectedTopics();
     }
-  }, [isAuth, email]); // depends on isAuth and email
+  }, [isAuth, email,postLists]); // depends on isAuth and email
 
   if (loading) {
     return <div> </div>;
