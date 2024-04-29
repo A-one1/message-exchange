@@ -17,6 +17,7 @@ import Home from "./pages/home";
 import { toast } from "react-toastify";
 import LandingPage from "./pages/LandingPage";
 import TopicSelector from "./component/topicSelector";
+import SignUp from "./pages/signup";
 
 function App() {
   const [isCollapsed, setIsCollapsed] = useState(true);
@@ -103,6 +104,8 @@ function App() {
       </Navbar>
       <Routes>
         <Route path="/login" element={<Login setIsAuth={setIsAuth} />} />
+        <Route path="/signup" element={<SignUp/>} />
+
         <Route path="/home" element={<Home />} />
         <Route
           path="/landingPage"

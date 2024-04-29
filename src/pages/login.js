@@ -23,10 +23,10 @@ import "../App.css";
 function Login({ setIsAuth }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const[selectedTopics,setSelectedTopics] = useState([]);
+  const [selectedTopics, setSelectedTopics] = useState([]);
 
   const navigate = useNavigate();
-  const postCollectionRef = collection(db, "Users");
+  const usersCollectionRef = collection(db, "Users");
 
   const signInWithGoogle = () => {
     signInWithPopup(auth, provider)
@@ -42,19 +42,18 @@ function Login({ setIsAuth }) {
         localStorage.setItem("uid", uid);
 
         const querySnapshot = await getDocs(
-          query(postCollectionRef, where("email", "==", email))
+          query(usersCollectionRef, where("email", "==", email))
         );
         if (querySnapshot.size > 0) {
-          const docRef = doc(postCollectionRef, querySnapshot.docs[0].id);
+          const docRef = doc(usersCollectionRef, querySnapshot.docs[0].id);
           await updateDoc(docRef, {
             id,
             date,
             name,
             email,
-            
           });
         } else {
-          await addDoc(postCollectionRef, {
+          await addDoc(usersCollectionRef, {
             id,
             date,
             name,
@@ -85,23 +84,18 @@ function Login({ setIsAuth }) {
     signInWithEmailAndPassword(auth, email, password)
       .then(async (userCredential) => {
         console.log(userCredential);
-        if (!userCredential.user.emailVerified) {
-          toast.error("Unverified user. Please check your email.");
-          sendEmailVerification(auth.currentUser);
-        } else {
-          setIsAuth(true);
-          localStorage.setItem("isAuth", true);
-          localStorage.setItem("uid", userCredential.user.uid);
-          navigate("/posts");
-        }
+        setIsAuth(true);
+        localStorage.setItem("isAuth", true);
+        localStorage.setItem("uid", userCredential.user.uid);
+        navigate("/landingPage");
 
         const date = serverTimestamp();
 
         const querySnapshot = await getDocs(
-          query(postCollectionRef, where("email", "==", email))
+          query(usersCollectionRef, where("email", "==", email))
         );
         if (querySnapshot.size > 0) {
-          const docRef = doc(postCollectionRef, querySnapshot.docs[0].id);
+          const docRef = doc(usersCollectionRef, querySnapshot.docs[0].id);
           await updateDoc(docRef, {
             date,
           });
