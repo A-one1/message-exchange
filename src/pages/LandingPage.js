@@ -18,13 +18,8 @@ function LandingPage({ isAuth, userEmail }) {
   const [postLists, setPostLists] = useState([]);
   const [loading, isLoading] = useState(true);
   const [selectedTopics, setSelectedTopics] = useState([]);
-  console.log("🚀 ~ LandingPage ~ selectedTopics:", selectedTopics);
   const email = userEmail;
-
-  const postsCollectionRef = collection(
-    db,
-    process.env.REACT_APP_ADMIN_DATABSE
-  );
+  const postsCollectionRef = collection(db,process.env.REACT_APP_ADMIN_DATABSE);
   const usersCollectionRef = collection(db, "Users");
 
   const getUserSelectedTopics = async () => {
@@ -35,6 +30,7 @@ function LandingPage({ isAuth, userEmail }) {
       setSelectedTopics(querySnapshot.docs[0].data().selectedTopics || []);
     }
   };
+
   async function deletePost(id) {
     const postDoc = doc(db, process.env.REACT_APP_ADMIN_DATABSE, id);
     await deleteDoc(postDoc);
@@ -52,12 +48,10 @@ function LandingPage({ isAuth, userEmail }) {
     selectedTopics.includes(post.topic)
   );
 
-  // useEffect hook for fetching posts
   useEffect(() => {
     getPosts();
-  }, [email]); // depends on email
+  }, [email,postLists]);
 
-  // useEffect hook for user authentication and getting user-selected topics
   useEffect(() => {
     if (!isAuth) {
       navigate("/login");
@@ -73,7 +67,7 @@ function LandingPage({ isAuth, userEmail }) {
   return (
     <div className="homePage">
       <ToastContainer />
-      <CreatePost isAuth={isAuth} />
+      <CreatePost isAuth={isAuth} email={email} />
 
       {filteredPosts.map((post, key) => {
         return (

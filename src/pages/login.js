@@ -180,14 +180,13 @@ function Login({ setIsAuth }) {
                 >
                   Forget Password?
                 </label>
-                <div className=" form-button">
+                <div className="social-login">
                   <input
                     style={{
                       height: "50px",
                       fontWeight: "bold",
                       fontSize: "15px",
                       marginLeft: "65px",
-                      padding: "10px 30px",
                     }}
                     type="submit"
                     name="signin"
@@ -206,7 +205,6 @@ function Login({ setIsAuth }) {
               >
                 Login with Google
               </button>
-              <br />
               <br />
               <br />
               <hr />

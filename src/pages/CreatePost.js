@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
 import {
   addDoc,
+  arrayUnion,
   collection,
   doc,
+  getDocs,
+  query,
   serverTimestamp,
   updateDoc,
+  where,
 } from "firebase/firestore";
 import { db, auth } from "../firebase";
 import { useNavigate } from "react-router-dom";
@@ -12,20 +16,21 @@ import "firebase/firestore";
 import "firebase/storage"; // <----
 import "../App.css";
 
-function CreatePost(props) {
+function CreatePost({ isAuth, email }) {
   let postid = "";
   let utcDateTime = "";
   const navigate = useNavigate();
-  const { isAuth } = props;
 
-  const [topic, setTopic] = useState("");
+  const [topicZ, setTopicZ] = useState("");
   const [title, setTitle] = useState("");
   const [postText, setPostText] = useState("");
 
   const [error, setError] = useState({});
   const postCollectionRef = collection(db, process.env.REACT_APP_ADMIN_DATABSE);
+  const usersCollectionRef = collection(db, "Users");
 
   const createPost = async () => {
+    const topic = topicZ.toLowerCase();
     await addDoc(postCollectionRef, {
       topic,
       title,
@@ -36,6 +41,16 @@ function CreatePost(props) {
       },
       date: serverTimestamp(),
     });
+
+    const querySnapshot = await getDocs(
+      query(usersCollectionRef, where("email", "==", email))
+    );
+    if (querySnapshot.size > 0) {
+      const docRef = doc(usersCollectionRef, querySnapshot.docs[0].id);
+      await updateDoc(docRef, {
+        selectedTopics: arrayUnion(topic),
+      });
+    }
 
     navigate("/landingPage");
   };
@@ -77,8 +92,8 @@ function CreatePost(props) {
             Topic:
             <input
               type="text"
-              value={topic}
-              onChange={(e) => setTopic(e.target.value)}
+              value={topicZ}
+              onChange={(e) => setTopicZ(e.target.value)}
               required
               className="form-input"
             />

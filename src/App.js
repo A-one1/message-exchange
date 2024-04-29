@@ -85,6 +85,7 @@ function App() {
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">
               <Nav.Link href="home">Home</Nav.Link>
+              <Nav.Link href="/landingPage"> View Threads </Nav.Link>
               {isAuth && <Nav.Link href="/availableTopics"> Topics</Nav.Link>}
 
               {!isAuth && <Nav.Link href="/login">Login</Nav.Link>}
