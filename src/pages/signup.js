@@ -22,15 +22,15 @@ function SignUp() {
         const email = auth.currentUser.email;
         const id = auth.currentUser.uid;
         const date = serverTimestamp();
-        const uid = auth.currentUser.uid;
         await addDoc(usersCollectionRef, {
           id,
           date,
           name,
           email,
         });
-        navigate("/login");
+       
       })
+      
       .catch((error) => {
         console.log(error);
         toast.error(error.code, {
@@ -41,6 +41,7 @@ function SignUp() {
           closeOnClick: true,
         });
       });
+      navigate("/login");
   };
   const onSubmit = (e) => {
     e.preventDefault();

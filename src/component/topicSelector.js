@@ -12,11 +12,10 @@ import { Button, Col, InputGroup, Row } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import { db } from "../firebase";
 import { auth } from "../firebase";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function TopicSelector({ userEmail, selectedTopics, setSelectedTopics }) {
   const [allTopic, setAllTopic] = useState([]);
-  // const [selectedTopics, setSelectedTopics] = useState([]);
   const postsCollectionRef = collection(
     db,
     process.env.REACT_APP_ADMIN_DATABSE
@@ -24,7 +23,6 @@ function TopicSelector({ userEmail, selectedTopics, setSelectedTopics }) {
   const usersCollectionRef = collection(db, "Users");
   const email = userEmail;
   const navigate = useNavigate();
-
   const getTopics = async () => {
     const q = query(postsCollectionRef, orderBy("date", "desc"));
     const data = await getDocs(q);

@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { auth, db, provider } from "../firebase";
 import { useNavigate } from "react-router-dom";
 import {
-  sendEmailVerification,
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signInWithPopup,

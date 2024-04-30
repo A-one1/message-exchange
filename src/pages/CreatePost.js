@@ -17,15 +17,10 @@ import "firebase/storage"; // <----
 import "../App.css";
 
 function CreatePost({ isAuth, email }) {
-  let postid = "";
-  let utcDateTime = "";
   const navigate = useNavigate();
-
   const [topicZ, setTopicZ] = useState("");
   const [title, setTitle] = useState("");
   const [postText, setPostText] = useState("");
-
-  const [error, setError] = useState({});
   const postCollectionRef = collection(db, process.env.REACT_APP_ADMIN_DATABSE);
   const usersCollectionRef = collection(db, "Users");
 
@@ -53,23 +48,7 @@ function CreatePost({ isAuth, email }) {
     }
 
     navigate("/landingPage");
-  };
-  const savePost = async () => {
-    const postRef = doc(postCollectionRef, postid);
-    if (Object.keys(error).length === 0) {
-      await updateDoc(postRef, {
-        title,
-        postText,
-        author: {
-          name: auth.currentUser.displayName,
-          id: auth.currentUser.uid,
-        },
-        date: serverTimestamp(),
-        expiryDate: utcDateTime,
-      });
-
-      navigate("/landingPage");
-    }
+    window.location.reload();
   };
 
   const handleSubmit = (event) => {

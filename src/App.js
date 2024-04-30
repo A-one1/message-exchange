@@ -13,14 +13,12 @@ import Login from "./pages/login";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "./firebase";
 import "react-toastify/dist/ReactToastify.css";
-import Home from "./pages/home";
 import { toast } from "react-toastify";
 import LandingPage from "./pages/LandingPage";
 import TopicSelector from "./component/topicSelector";
 import SignUp from "./pages/signup";
 
 function App() {
-  const [isCollapsed, setIsCollapsed] = useState(true);
   const navigate = useNavigate();
   const [selectedTopics, setSelectedTopics] = useState([]);
   const [isAuth, setIsAuth] = useState(() => {
@@ -30,16 +28,11 @@ function App() {
   const [userEmail, setUserEmail] = useState(
     auth.currentUser ? auth.currentUser.email : null
   );
-  console.log("🚀 ~ const[isAuth,setIsAuth]=useState ~ isAuth:", isAuth);
-  const notify = () => toast("Wow so easy!");
-
-  
 
   const signUserOut = () => {
     signOut(auth).then(() => {
       localStorage.clear();
       setIsAuth(false);
-      // window.location.pathname = "/";
       navigate("/");
       console.log("signed out");
 
@@ -49,10 +42,6 @@ function App() {
         theme: "colored",
       });
     });
-  };
-
-  const handleToggle = () => {
-    setIsCollapsed(!isCollapsed);
   };
 
   useEffect(() => {
@@ -104,9 +93,9 @@ function App() {
       </Navbar>
       <Routes>
         <Route path="/login" element={<Login setIsAuth={setIsAuth} />} />
-        <Route path="/signup" element={<SignUp/>} />
-
-        <Route path="/home" element={<Home />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/home" element={<Login setIsAuth={setIsAuth} />} />
+        <Route path="/" element={<Login setIsAuth={setIsAuth} />} />
         <Route
           path="/landingPage"
           element={
@@ -115,7 +104,6 @@ function App() {
               setIsAuth={setIsAuth}
               selectedTopics={selectedTopics}
               userEmail={userEmail}
-
             />
           }
         />
@@ -129,12 +117,6 @@ function App() {
             />
           }
         />
-
-        {/* <Route path="/login" element={<Login setIsAuth={setIsAuth} />} />
-      <Route path="/signup" element={<SignUp />} />
-      <Route path="/" element={<Landing isAuth={isAuth} />} />
-      <Route path="/posts" element={<Posts isAuth={isAuth} isAdmin={isAdmin} />}/>
-      <Route path="/view" element={<ViewPost />} /> */}
       </Routes>
     </>
   );
